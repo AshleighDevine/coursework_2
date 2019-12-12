@@ -12,6 +12,22 @@ node {
          * docker build on the command line */
         app = docker.build("ashleighdevine/coursework2")
     }
+    
+    stage('Sonarqube') {
+        environment {
+                    scannerHome = tool 'SonarQubeScanner'
+                }
+        steps {
+            withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                    }
+            timeout(time: 10, unit: 'MINUTES') {
+                sleep(10)
+                waitForQualityGate abortPipeline: true
+        	}
+        }
+    }
+
 
     stage('Test image') {
         /* Ideally, we would run a test framework against our image.
