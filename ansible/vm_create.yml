@@ -1,0 +1,46 @@
+- name: Create Azure VM
+  hosts: localhost
+  connection: local
+
+  vars:
+    myResourceGroup: ansible1
+    myVnet: ansible-production-vnet
+    mySubnet: ansible-production-subnet
+    myPublicIP: ansible-production-publicip
+    myNIC: ansible-production-nic
+    myNetworkSecurityGroup: ansible-production-nsg
+    myVM: ansible-production
+    mySSHkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRAMc4PL8B6D0vO0m4nr1PhnS5cgMXWQcXmmRCJshj4bIN4UPnZqZwVX5BwbiKrDncUGXy4GeywAZ9uh3+E1saMp4W8oU/Z8UOowG9MO9c1nILJ0teDsJQCOkdBuJNE3bOs/Bm6TppK$
+
+  tasks:
+    - name: Create virtual network
+      azure_rm_virtualnetwork:
+        resource_group: "{{ myResourceGroup }}"
+        name: "{{ myVnet }}"
+        address_prefixes: "10.0.0.0/16"
+
+    - name: Add subnet
+      azure_rm_subnet:
+        resource_group: "{{ myResourceGroup }}"
+        name: "{{ mySubnet }}"
+        address_prefix: "10.0.1.0/24"
+        virtual_network: "{{ myVnet }}"
+
+    - name: Create public IP address
+      azure_rm_publicipaddress:
+        resource_group: "{{ myResourceGroup }}"
+        allocation_method: Static
+        name: "{{ myPublicIP }}"
+      register: output_ip_address
+
+    - name: Create Network Security Group that allows SSH
+      azure_rm_securitygroup:
+        resource_group: "{{ myResourceGroup }}"
+        name: "{{ myNetworkSecurityGroup }}"
+        rules:
+          - name: SSH
+            protocol: Tcp
+            destination_port_range: 22
+            access: Allow
+            priority: 1001
+
