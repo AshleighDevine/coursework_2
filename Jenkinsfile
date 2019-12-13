@@ -1,24 +1,23 @@
 pipeline {
     agent any
-    environment {
-        CI = 'true'
-    }
-    stages {
-       stage('SonarQube') {
-    environment {
-        scannerHome = tool 'SonarQube'
-    }
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-     }
-}
-}
+        stages {
+            stage('Sonarqube') {
+                environment {
+                    scannerHome = tool 'SonarQubeScanner'
+                }
+                steps {
+                    withSonarQubeEnv('sonarqube') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                    timeout(time: 10, unit: 'MINUTES') {
+                    					sleep(10)
+                    					waitForQualityGate abortPipeline: true
+                    				}
+                }
+            }
     }
 }
+
 node {
     def app
 
