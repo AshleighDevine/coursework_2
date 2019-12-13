@@ -17,7 +17,7 @@ node{
     }
 
     stage('Test image') {
-        withSonarQubeEnv('SonarQube') { // If you have configured more than one global server connection, you can specify its name
+        withSonarQubeEnv('SonarQubeScanner') { 
             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectName=coursework_2 -Dsonar.projectKey=coursework_2:app -Dsonar.sources=."
         }
     }
