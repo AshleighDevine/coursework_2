@@ -1,5 +1,5 @@
 node{
-    def scannerHome = tool 'SonarQube';
+    def scannerHome = tool 'SonarQubeScanner';
     def app
     def remote = [:]
     remote.name = 'master'
