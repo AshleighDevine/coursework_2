@@ -2,7 +2,7 @@ node{
     def scannerHome = tool 'SonarQubeScanner';
     def app
     def remote = [:]
-    remote.name = 'master'
+    remote.name = 'node-production'
     remote.host = '40.114.44.182'
     remote.user = 'master'
     remote.password = 'Password123!'
