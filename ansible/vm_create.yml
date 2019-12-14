@@ -10,7 +10,7 @@
     myNIC: ansible-production-nic
     myNetworkSecurityGroup: ansible-production-nsg
     myVM: ansible-production
-    mySSHkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRAMc4PL8B6D0vO0m4nr1PhnS5cgMXWQcXmmRCJshj4bIN4UPnZqZwVX5BwbiKrDncUGXy4GeywAZ9uh3+E1saMp4W8oU/Z8UOowG9MO9c1nILJ0teDsJQCOkdBuJNE3bOs/Bm6TppK$
+    mySSHkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRAMc4PL8B6D0vO0m4nr1PhnS5cgMXWQcXmmRCJshj4bIN4UPnZqZwVX5BwbiKrDncUGXy4GeywAZ9uh3+E1saMp4W8oU/Z8UOowG9MO9c1nILJ0teD$
 
   tasks:
     - name: Create virtual network
@@ -39,8 +39,4 @@
         name: "{{ myNetworkSecurityGroup }}"
         rules:
           - name: SSH
-            protocol: Tcp
-            destination_port_range: 22
-            access: Allow
-            priority: 1001
 
