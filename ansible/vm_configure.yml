@@ -1,0 +1,41 @@
+- name: Configure Node VM
+  hosts: azure
+  user: azureuser
+  become: yes
+
+  vars:
+    myResourceGroup: ansible1
+    myVM: ansible-production
+
+  tasks:
+
+  - name: Install Various Packages
+    apt:
+      update_cache: yes
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - libssl-dev
+      - libffi-dev
+      - python-dev
+      - python-pip
+
+  - name: Install Ansible for Azure
+    command: pip install ansible[azure]
+
+  - name: Get virtualbox key
+    shell: wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+
+  - name: Install virtualbox
+    apt:
+      update_cache: yes
+      name: virtualbox
+
+  - stat:
+      path: /home/azureuser/docker_node.sh
+    register: result
+
+  - name: Copy docker_node.sh to Node
+    copy:
+      src: ./docker_node.sh
+      dest: /home/azureuser/docker_node.sh
